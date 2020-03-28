@@ -36,6 +36,11 @@ function watch(cb) {
       });
 }
 
+function cssGzipSize() {
+  let gzipped = gzipSize.fileSync('dist/styles.css')
+  console.log(`(${gzipped}B gzipped)`);
+}
+
 function css(cb) {
   return gulp
     .src('assets/css/*.css')
@@ -43,12 +48,10 @@ function css(cb) {
     .pipe(cleanCSS({debug: true}, (details) => {
       let original = details.stats.originalSize + 'B';
       let mini = details.stats.minifiedSize + 'B';
-      console.log(details);
-      //let gzip = gzipSize.sync() + 'B';
-      let gzip = '?';
-      console.log(`Minified CSS from ${original} to ${mini} (${gzip} gzipped)`);
+      process.stdout.write(`Minified CSS from ${original} to ${mini} `);
     }))
-  .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('dist'))
+    .on('end', () => cssGzipSize())
 }
 
 function js(cb) {
