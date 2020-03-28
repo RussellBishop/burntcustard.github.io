@@ -18,9 +18,12 @@
   },
   "homepage": "https://github.com/burntcustard/burntcustard.github.io#readme",
   "dependencies": {
+    "browser-sync": "^2.26.7",
     "del": "^5.1.0",
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.3.0",
-    "gulp-replace": "^1.0.0"
+    "gulp-concat": "^2.6.1",
+    "gulp-replace": "^1.0.0",
+    "gzip-size": "^5.1.1"
   }
 }

@@ -3,7 +3,9 @@ const del = require('del');
 const fs = require("fs");
 const gulp = require('gulp');
 const cleanCSS = require('gulp-clean-css');
+const concat = require('gulp-concat');
 const replace = require('gulp-replace');
+const gzipSize = require('gzip-size');
 
 function clean(cb) {
   return del(['dist/']);
@@ -35,10 +37,16 @@ function watch(cb) {
 }
 
 function css(cb) {
-  return gulp.src('assets/css/*.css')
+  return gulp
+    .src('assets/css/*.css')
+    .pipe(concat('styles.css'))
     .pipe(cleanCSS({debug: true}, (details) => {
-      console.log(`${details.name}: ${details.stats.originalSize}`);
-      console.log(`${details.name}: ${details.stats.minifiedSize}`);
+      let original = details.stats.originalSize + 'B';
+      let mini = details.stats.minifiedSize + 'B';
+      console.log(details);
+      //let gzip = gzipSize.sync() + 'B';
+      let gzip = '?';
+      console.log(`Minified CSS from ${original} to ${mini} (${gzip} gzipped)`);
     }))
   .pipe(gulp.dest('dist'));
 }
@@ -54,8 +62,8 @@ function html() {
     .src([
       'src/pages/*.html'
     ], { base: './src' })
-    .pipe(header('\n'))
-    .pipe(footer('\n'))
+    // .pipe(header('\n'))
+    // .pipe(footer('\n'))
     .pipe(replace(/(?:<part src=")([a-zA-Z./-]*)(?:"\/?>)/g, (match, p1) => {
        try {
          var component = fs.readFileSync(`src/parts/${p1}.html`);
@@ -65,7 +73,7 @@ function html() {
        }
        return component;
     }))
-    .pipe(replace(/(.+\r?\n)/g, '    $1'))
+    //.pipe(replace(/(.+\r?\n)/g, '    $1'))
     .pipe(gulp.dest('./'))
 }
 
