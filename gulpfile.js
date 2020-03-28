@@ -17,7 +17,8 @@ function browserSyncInit(cb) {
     serveStatic: ['./'],
     serveStaticOptions: {
       extensions: ['html']
-    }
+    },
+    logSnippet: false
   });
   cb();
 }
@@ -27,7 +28,7 @@ function reload(cb) {
   cb();
 }
 
-function watch(cb) {
+function watch() {
   gulp.watch('assets/css/*.css', css);
 
   gulp.watch('src/**/*.html', gulp.series(html, reload))
@@ -51,7 +52,7 @@ function css() {
     })
 }
 
-function js(cb) {
+function js() {
   return gulp
     .src('assets/js/**/*.js')
     .pipe(gulp.dest('dist/js'));
