@@ -1,0 +1,26 @@
+{
+  "name": "burnt.io",
+  "version": "1.0.0",
+  "description": "If you got here looking for my CI287 Web based game development module game, go play it at [burnt.io/sem1game](http://burnt.io/sem1game/), or have a look at the code in the sem1game folder.",
+  "main": "index.html",
+  "scripts": {
+    "build": "gulp",
+    "watch": "gulp watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/burntcustard/burntcustard.github.io.git"
+  },
+  "author": "burntcustard",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/burntcustard/burntcustard.github.io/issues"
+  },
+  "homepage": "https://github.com/burntcustard/burntcustard.github.io#readme",
+  "dependencies": {
+    "del": "^5.1.0",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-replace": "^1.0.0"
+  }
+}
