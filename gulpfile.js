@@ -28,7 +28,7 @@ function reload(cb) {
 }
 
 function watch(cb) {
-  gulp.watch('assets/css/*.css', gulp.series(css));
+  gulp.watch('assets/css/*.css', css);
 
   gulp.watch('src/**/*.html', gulp.series(html, reload))
       .on('all', (event, path, stats) => {
@@ -36,12 +36,7 @@ function watch(cb) {
       });
 }
 
-function cssGzipSize() {
-  let gzipped = gzipSize.fileSync('dist/styles.css')
-  console.log(`(${gzipped}B gzipped)`);
-}
-
-function css(cb) {
+function css() {
   return gulp
     .src('assets/css/*.css')
     .pipe(concat('styles.css'))
@@ -51,7 +46,9 @@ function css(cb) {
       process.stdout.write(`Minified CSS from ${original} to ${mini} `);
     }))
     .pipe(gulp.dest('dist'))
-    .on('end', () => cssGzipSize())
+    .on('end', () => {
+      console.log(`(${gzipSize.fileSync('dist/styles.css')}B gzipped)`);
+    })
 }
 
 function js(cb) {
@@ -65,8 +62,6 @@ function html() {
     .src([
       'src/pages/*.html'
     ], { base: './src' })
-    // .pipe(header('\n'))
-    // .pipe(footer('\n'))
     .pipe(replace(/(?:<part src=")([a-zA-Z./-]*)(?:"\/?>)/g, (match, p1) => {
        try {
          var component = fs.readFileSync(`src/parts/${p1}.html`);
@@ -76,7 +71,6 @@ function html() {
        }
        return component;
     }))
-    //.pipe(replace(/(.+\r?\n)/g, '    $1'))
     .pipe(gulp.dest('./'))
 }
 
