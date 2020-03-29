@@ -50,6 +50,7 @@ function css() {
     .on('end', () => {
       console.log(`(${gzipSize.fileSync('dist/styles.css')}B gzipped)`);
     })
+    .pipe(browserSync.stream())
 }
 
 function js() {
