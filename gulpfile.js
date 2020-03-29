@@ -62,7 +62,7 @@ function html() {
   return gulp
     .src([
       'src/pages/*.html'
-    ], { base: './src' })
+    ], { base: './src/pages' })
     .pipe(replace(/(?:<part src=")([a-zA-Z./-]*)(?:"\/?>)/g, (match, p1) => {
        try {
          var component = fs.readFileSync(`src/parts/${p1}.html`);
@@ -72,7 +72,7 @@ function html() {
        }
        return component;
     }))
-    .pipe(gulp.dest('./'))
+    .pipe(gulp.dest('./dist'))
 }
 
 exports.clean = clean;
