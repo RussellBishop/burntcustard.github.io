@@ -14,7 +14,7 @@ function clean(cb) {
 
 function browserSyncInit(cb) {
   browserSync.init({
-    serveStatic: ['./dist'],
+    serveStatic: ['dist'],
     serveStaticOptions: {
       extensions: ['html']
     },
