@@ -75,7 +75,7 @@ function slotParts(html) {
 
     // Part importing recursion
     if (part.includes('<part src="')) {
-      part = replaceParts(part);
+      part = slotParts(part);
     }
 
     return part.replace(/^/gm, indent);
@@ -93,9 +93,9 @@ function slotContent(html, content) {
   return html.replace(regex, replacer);
 }
 
-function setCurrentNav(html, path) {
-  const filename path.basename(path, path.extname(path));
-  const dirname = path.basename(path.dirname(path));
+function setCurrentNav(html, pagePath) {
+  const filename = path.basename(pagePath, path.extname(pagePath));
+  const dirname = path.basename(path.dirname(pagePath));
   const regex = new RegExp(`href="\/${filename}|${dirname}"`);
   return html.replace(regex, '$& aria-current="page"');
 }
@@ -184,7 +184,7 @@ exports.default = gulp.series(
   clean,
   gulp.parallel(
     html,
-    posts,
+    //posts,
     css,
     js
   )
