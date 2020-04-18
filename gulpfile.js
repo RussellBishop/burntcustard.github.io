@@ -65,20 +65,32 @@ function hasParts(html) {
 }
 
 function replaceParts(html) {
-  const regex = /(?:<part src=")([a-zA-Z./-]*)(?:"\/?>)/g;
-  const replacer = (match, param1) => {
+  const regex = /( *)(?:<part src=")([a-zA-Z./-]*)(?:"\/?>)/g;
+  const replacer = (match, indent, filename) => {
     try {
-      var part = fs.readFileSync(`src/parts/${param1}.html`).toString();
+      var part = fs.readFileSync(`src/parts/${filename}.html`).toString();
     } catch (error) {
       console.error(error);
-      return `<pre>Failed to include src/parts/${param1}.html</pre>`;
+      return `<pre>Failed to include src/parts/${filename}.html</pre>`;
     }
 
     if (hasParts(part)) {
       part = replaceParts(part);
     }
 
+    part = part.replace(/^/gm, indent);
+    //console.log(part);
+
     return part;
+  };
+
+  return html.replace(regex, replacer);
+}
+
+function replaceContent(html, content) {
+  const regex = /( *)(?:<content\/?>)/g;
+  const replacer = (match, indent) => {
+    return content.replace(/^/gm, indent);
   };
 
   return html.replace(regex, replacer);
@@ -107,7 +119,7 @@ function posts() {
     .pipe(markdown())
     .pipe(through((chunk, encoding, callback) => {
       let content = chunk.contents.toString();
-      let html = single.replace(/<content\/?>/g, content);
+      let html = replaceContent(single, content);
       html = replaceParts(html);
       chunk.contents = Buffer.from(html);
       callback(null, chunk);
