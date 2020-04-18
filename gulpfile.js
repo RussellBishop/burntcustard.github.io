@@ -60,10 +60,6 @@ function js() {
     .pipe(gulp.dest('dist/js'));
 }
 
-function hasParts(html) {
-  return html.includes('<part src="');
-}
-
 function replaceParts(html) {
   const regex = /( *)(?:<part src=")([a-zA-Z./-]*)(?:"\/?>)/g;
   const replacer = (match, indent, filename) => {
@@ -74,14 +70,12 @@ function replaceParts(html) {
       return `<pre>Failed to include src/parts/${filename}.html</pre>`;
     }
 
-    if (hasParts(part)) {
+    // Part importing recursion
+    if (part.includes('<part src="')) {
       part = replaceParts(part);
     }
 
-    part = part.replace(/^/gm, indent);
-    //console.log(part);
-
-    return part;
+    return part.replace(/^/gm, indent);
   };
 
   return html.replace(regex, replacer);
@@ -102,7 +96,7 @@ function html() {
       'src/pages/*.html'
     ], { base: './src/pages' })
     .pipe(through((chunk, encoding, callback) => {
-      var html = chunk.contents.toString();
+      let html = chunk.contents.toString();
       html = replaceParts(html);
       chunk.contents = Buffer.from(html);
       callback(null, chunk);
