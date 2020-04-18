@@ -4,7 +4,6 @@ const fs = require("fs");
 const gulp = require('gulp');
 const cleanCSS = require('gulp-clean-css');
 const concat = require('gulp-concat');
-const replace = require('gulp-replace');
 const gzipSize = require('gzip-size');
 const through = require('through2').obj;
 const markdown = require('gulp-markdown');
@@ -66,22 +65,23 @@ function hasParts(html) {
 }
 
 function replaceParts(html) {
-  html.replace(/(?:<part src=")([a-zA-Z./-]*)(?:"\/?>)/g, (match, param1) => {
+  const regex = /(?:<part src=")([a-zA-Z./-]*)(?:"\/?>)/g;
+  const replacer = (match, param1) => {
     try {
-      let part = fs.readFileSync(`src/parts/${param1}.html`);
+      var part = fs.readFileSync(`src/parts/${param1}.html`).toString();
     } catch (error) {
-        console.error(error);
+      console.error(error);
       return `<pre>Failed to include src/parts/${param1}.html</pre>`;
     }
 
     if (hasParts(part)) {
-      replaceParts(part);
+      part = replaceParts(part);
     }
 
     return part;
-  });
+  };
 
-  return html;
+  return html.replace(regex, replacer);
 }
 
 function html() {
@@ -99,16 +99,17 @@ function html() {
 }
 
 function posts() {
-  let single = fs.readFileSync('src/posts/single.html');
+  let single = fs.readFileSync('src/posts/single.html').toString();
   return gulp
     .src([
       'src/posts/*.md'
     ], { base: './src/posts' })
     .pipe(markdown())
     .pipe(through((chunk, encoding, callback) => {
-      var content = chunk.contents.toString();
-      content += test;
-      chunk.contents = Buffer.from(content);
+      let content = chunk.contents.toString();
+      let html = single.replace(/<content\/?>/g, content);
+      html = replaceParts(html);
+      chunk.contents = Buffer.from(html);
       callback(null, chunk);
     }))
     .pipe(gulp.dest('./dist/blog'))
