@@ -198,12 +198,14 @@ function html() {
       '!src/**/?(_)template.html', // Exclude templates (w/ optional '_')
     ])
     .pipe(through.obj((chunk, enc, cb) => jam(chunk, enc, cb, templates)))
-    .pipe(rename(path => {
+    .pipe(rename(path => ({
+      // Move pages out of their subdirectory, to the root of /dist
+      dirname: path.dirname === 'pages' ? '' : path.dirname,
       // Remove optional underscores so e.g. '_index.html' becomes 'index.html'
-      path.basename = path.basename.replace(/^_/, '');
+      basename: path.basename.replace(/^_/, ''),
       // All extension names are now .html (i.e. convert from .md)
-      path.extname = '.html'
-    }))
+      extname: '.html'
+    })))
     .pipe(gulp.dest('./dist'))
 }
 
