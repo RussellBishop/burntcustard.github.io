@@ -19,6 +19,7 @@
   "homepage": "https://github.com/burntcustard/burntcustard.github.io#readme",
   "dependencies": {
     "browser-sync": "^2.26.7",
+    "chalk": "^4.0.0",
     "del": "^5.1.0",
     "fast-glob": "^3.2.2",
     "gulp": "^4.0.2",

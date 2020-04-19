@@ -10,6 +10,7 @@ const path = require('path');
 const markdown = require('marked');
 const glob = require ('fast-glob');
 const rename = require('gulp-rename');
+const chalk = require('chalk');
 
 function clean(cb) {
   return del(['dist/']);
@@ -75,21 +76,23 @@ function js() {
  * @param  {[type]} html [description]
  * @return {[type]}      [description]
  */
-function slotParts(html) {
+function slotParts(html, parts) {
   const regex = /( *)(?:<part src=")([a-zA-Z./-]*)(?:"\/?>)/g;
   const replacer = (match, indent, filename) => {
-    try {
-      var part = fs.readFileSync(`src/parts/${filename}.html`, 'utf8');
-    } catch (error) {
-      console.error(error);
-      return `<pre>Failed to include src/parts/${filename}.html</pre>`;
+    if (!(filename in parts)) {
+      let error = `Failed to include part: src/parts/${filename}.html`;
+      console.error(chalk.red(error));
+      return `<pre>${error}</pre>`;
     }
+
+    let part = parts[filename];
 
     // Part importing recursion
     if (part.includes('<part src="')) {
-      part = slotParts(part);
+      part = slotParts(part, parts);
     }
 
+    // Return withe part, with the same indentation as the tag it's replacing
     return part.replace(/^/gm, indent);
   };
 
@@ -163,7 +166,7 @@ function combineTitles(html, separator = ' - ') {
  * @param  {[type]}   templates [description]
  * @return {[type]}             [description]
  */
-function jam(chunk, encoding, callback, templates) {
+function jam(chunk, encoding, callback, templates, parts) {
   let content = chunk.contents.toString();
 
   // If the file is markdown
@@ -178,7 +181,7 @@ function jam(chunk, encoding, callback, templates) {
     }
   }
 
-  content = slotParts(content);
+  content = slotParts(content, parts);
   content = setCurrentNav(content, chunk.path);
   content = combineTitles(content);
 
@@ -188,8 +191,13 @@ function jam(chunk, encoding, callback, templates) {
 
 function html() {
   let templates = {};
-  glob.sync('src/*/template.html', { absolute:true }).forEach(filepath => {
-    templates[filepath] = fs.readFileSync(filepath).toString();
+  glob.sync('src/*/template.html', { absolute: true }).forEach(filepath => {
+    templates[filepath] = fs.readFileSync(filepath, 'utf8');
+  });
+  let parts = {};
+  glob.sync('src/parts/*.html').forEach(filepath => {
+    let filename = path.basename(filepath, path.extname(filepath));
+    parts[filename] = fs.readFileSync(filepath, 'utf8');
   });
   return gulp
     .src([
@@ -197,7 +205,7 @@ function html() {
       '!src/parts/*', // Exclude the parts folder
       '!src/**/?(_)template.html', // Exclude templates (w/ optional '_')
     ])
-    .pipe(through.obj((chunk, enc, cb) => jam(chunk, enc, cb, templates)))
+    .pipe(through.obj((chunk, enc, cb) => jam(chunk, enc, cb, templates, parts)))
     .pipe(rename(path => ({
       // Move pages out of their subdirectory, to the root of /dist
       dirname: path.dirname === 'pages' ? '' : path.dirname,
