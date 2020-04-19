@@ -5,7 +5,7 @@ const gulp = require('gulp');
 const cleanCSS = require('gulp-clean-css');
 const concat = require('gulp-concat');
 const gzipSize = require('gzip-size');
-const through = require('through2').obj;
+const through = require('through2');
 const path = require('path');
 const markdown = require('marked');
 const glob = require ('fast-glob');
@@ -136,7 +136,7 @@ function jam(chunk, encoding, callback, templates) {
     content = markdown(content);
 
     // If it's in a folder with a template, slot the content in the template
-    let templatePath = path.dirname(chunk.path).replace(__dirname, '').substring(1) + '/template.html';
+    let templatePath = path.dirname(chunk.path) + '/template.html';
     if (templatePath in templates) {
       content = slotContent(templates[templatePath], content);
     }
@@ -151,17 +151,16 @@ function jam(chunk, encoding, callback, templates) {
 
 function html() {
   let templates = {};
-  [...glob.sync('src/*/template.html')].forEach(filepath => {
+  glob.sync('src/*/template.html', { absolute:true }).forEach(filepath => {
     templates[filepath] = fs.readFileSync(filepath).toString();
   });
   return gulp
     .src([
-      'src/**/*.html',
+      'src/**/*.{html,md}',
       '!src/parts/*', // Exclude the parts folder
       '!src/**/?(_)template.html', // Exclude templates (w/ optional '_')
-      'src/**/*.md'
-    ], { base: './src/' })
-    .pipe(through((chunk, enc, cb) => jam(chunk, enc, cb, templates)))
+    ])
+    .pipe(through.obj((chunk, enc, cb) => jam(chunk, enc, cb, templates)))
     .pipe(rename(path => {
       // Remove optional underscores so e.g. '_index.html' becomes 'index.html'
       path.basename = path.basename.replace(/^_/, '');
