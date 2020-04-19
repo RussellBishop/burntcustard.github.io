@@ -120,10 +120,10 @@ function setCurrentNav(html, pagePath) {
 
 function combineTitles(html, separator = ' - ') {
   // Used to get all the title elements from an HTML snippet
-  const titleElementsRegex = /( *<title>[A-Za-z0-9 ./-]+<\/title>)/g;
+  const titleElementsRegex = /(<title>[^<]+<\/title>)/g;
 
   // Used to pull the title text out of a title tag
-  const titleTextRegex = /(?: *<title>)([A-Za-z0-9 ./-]+)(?:<\/title)/;
+  const titleTextRegex = /(?:<title>)([^<]+)(?:<\/title)/;
 
   // Get all the title elements including <title> tags and indentation
   const titleElements = html.match(titleElementsRegex);
@@ -138,16 +138,16 @@ function combineTitles(html, separator = ' - ') {
   for (i = titleElements.length - 1; i >= 0; i--) {
     titleTexts.unshift(titleElements[i].match(titleTextRegex)[1]);
 
-    //console.log(titleTexts);
-
     // If the title element is the first, original, hopefully in <head>, one
     if (i === 0) {
       // Replace it with all the title tags combined
       let fullTitle = titleTexts.join(separator);
       html = html.replace(titleElements[i], `<title>${fullTitle}</title>`);
     } else {
-      // Otherwise remove it
-      html = html.replace(titleElements[i], '');
+      // Otherwise remove it!
+      // Get the full title line, with indentation and newline at the end. Also
+      // Include 0 or 1 single empty lines (can have spaces) after title line
+      html = html.replace(new RegExp(` *${titleElements[i]}( *\\n)*`), '');
     }
   }
 
