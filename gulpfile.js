@@ -118,6 +118,34 @@ function setCurrentNav(html, pagePath) {
   return html.replace(regex, '$& aria-current="page"');
 }
 
+function combineTitles(html, separator = ' - ') {
+  // Used to get all the title elements from an HTML snippet
+  const titleElementsRegex = /( *<title>[A-Za-z0-9 ./-]<\/title>)/g;
+
+  // Used to pull the title text out of a title tag
+  const titleTextRegex = /(?: *<title>)([A-Za-z0-9 ./-])(?:<\/title)/;
+
+  // Get all the title elements including <title> tags and indentation
+  const titleElements = html.match(titleElementsRegex);
+
+  let fullTitle = '';
+
+  for (i = titleElements.length; i > 0; i--) {
+    fullTitle = titleElements[i].match(titleTextRegex) + separator + fullTitle;
+
+    // If the title element is the first, original, hopefully in <head>, one
+    if (index === 0) {
+      // Replace it with all the title tags combined
+      html.replace(titleElements[i], `<title>${fullTitle}</title>`);
+    } else {
+      // Otherwise remove it
+      html.replace(titleElements[i], '');
+    }
+  }
+
+  return html;
+}
+
 /**
  * Named after jamstack, this does (or calls) all the fun part replacement,
  * markdown to HTML, slotting content into templates, etc.
@@ -144,6 +172,7 @@ function jam(chunk, encoding, callback, templates) {
 
   content = slotParts(content);
   content = setCurrentNav(content, chunk.path);
+  content = combineTitles(content);
 
   chunk.contents = Buffer.from(content);
   callback(null, chunk);
