@@ -120,26 +120,34 @@ function setCurrentNav(html, pagePath) {
 
 function combineTitles(html, separator = ' - ') {
   // Used to get all the title elements from an HTML snippet
-  const titleElementsRegex = /( *<title>[A-Za-z0-9 ./-]<\/title>)/g;
+  const titleElementsRegex = /( *<title>[A-Za-z0-9 ./-]+<\/title>)/g;
 
   // Used to pull the title text out of a title tag
-  const titleTextRegex = /(?: *<title>)([A-Za-z0-9 ./-])(?:<\/title)/;
+  const titleTextRegex = /(?: *<title>)([A-Za-z0-9 ./-]+)(?:<\/title)/;
 
   // Get all the title elements including <title> tags and indentation
   const titleElements = html.match(titleElementsRegex);
 
-  let fullTitle = '';
+  // If there's no titles, or there's only one, don't modify
+  if (!titleElements || titleElements.length === 1) {
+    return html;
+  }
 
-  for (i = titleElements.length; i > 0; i--) {
-    fullTitle = titleElements[i].match(titleTextRegex) + separator + fullTitle;
+  const titleTexts = [];
+
+  for (i = titleElements.length - 1; i >= 0; i--) {
+    titleTexts.unshift(titleElements[i].match(titleTextRegex)[1]);
+
+    //console.log(titleTexts);
 
     // If the title element is the first, original, hopefully in <head>, one
-    if (index === 0) {
+    if (i === 0) {
       // Replace it with all the title tags combined
-      html.replace(titleElements[i], `<title>${fullTitle}</title>`);
+      let fullTitle = titleTexts.join(separator);
+      html = html.replace(titleElements[i], `<title>${fullTitle}</title>`);
     } else {
       // Otherwise remove it
-      html.replace(titleElements[i], '');
+      html = html.replace(titleElements[i], '');
     }
   }
 
