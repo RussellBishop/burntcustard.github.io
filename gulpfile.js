@@ -35,7 +35,7 @@ function reload(cb) {
 function watch() {
   gulp.watch('assets/css/*.css', css);
 
-  gulp.watch('src/**/*.html', gulp.series(html, reload))
+  gulp.watch('src/**/*.{html,md}', gulp.series(html, reload))
       .on('all', (event, path, stats) => {
         console.log('Markup changed:', path);
       });
@@ -165,6 +165,8 @@ function html() {
     .pipe(rename(path => {
       // Remove optional underscores so e.g. '_index.html' becomes 'index.html'
       path.basename = path.basename.replace(/^_/, '');
+      // All extension names are now .html (i.e. convert from .md)
+      path.extname = '.html'
     }))
     .pipe(gulp.dest('./dist'))
 }
@@ -185,7 +187,6 @@ exports.default = gulp.series(
   clean,
   gulp.parallel(
     html,
-    //posts,
     css,
     js
   )
