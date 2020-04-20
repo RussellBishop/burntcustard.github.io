@@ -172,7 +172,7 @@ function jam(chunk, encoding, callback, templates, parts) {
   // If the file is markdown
   if (path.extname(chunk.path) === '.md') {
     // Convert it to HTML
-    content = markdown(content);
+    content = markdown(content, { smartypants: true });
 
     // If it's in a folder with a template, slot the content in the template
     let templatePath = path.dirname(chunk.path) + '/template.html';

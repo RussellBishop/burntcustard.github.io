@@ -1,0 +1,5 @@
+nav a {
+  display: inline-flex;
+  border: 1px solid var(--color-white);
+  padding: 4px 10px;
+}
