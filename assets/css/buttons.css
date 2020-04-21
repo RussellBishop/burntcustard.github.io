@@ -6,28 +6,59 @@ nav a {
   font-size: 24px;
   border: 2px solid var(--color-white);
   padding: 4px 10px;
+  transition: .2s all;
+  background: var(--color-gray-dark)
 }
 
 nav a:nth-child(2) {
   margin-left: auto;
 }
 
-nav a:before {
+nav a:before,
+nav a:after {
   display: block;
   position: absolute;
-  border-top: 2px solid currentColor;;
-  border-bottom: 2px solid currentColor;;
-  top: -2px;
-  right: 0px;
-  bottom: -2px;
-  left: 0px;
   content: '';
   transition: .2s all;
 }
 
 nav a:hover:before {
-  //right: 4px;
-  //left: 4px;
-  top: 4px;
-  bottom: 4px;
+
+}
+
+
+a.blog:before,
+a.blog:after {
+  height: 0;
+  z-index: -1;
+  transition: .3s all steps(3, end);;
+}
+
+a.blog:before {
+  border-right: 2px solid var(--color-white);
+  border-bottom: 2px solid var(--color-white);
+  border-left: 2px solid var(--color-white);
+  left: 10px;
+  right: 10px;
+  top: calc(100% - 18px);
+  height: 18px;
+}
+
+a.blog:after {
+  border-top: 2px solid var(--color-white);
+  border-bottom: 2px solid var(--color-white);
+  left: 20px;
+  right: 20px;
+  top: calc(100% - 12px);
+  height: 4px;
+}
+
+a.blog:hover:before {
+  top: 100%;
+  height: 18px;
+}
+
+a.blog:hover:after {
+  top: calc(100% + 6px);
+  height: 4px;
 }
