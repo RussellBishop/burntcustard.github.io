@@ -1,7 +1,7 @@
 body {
   background: var(--color-gray-dark);
-  color: var(--color-white);
+  color: var(--color-nearly-white);
   font-family: 'Fira Code', monospace;
   font-size: 18px;
-  margin: 10.8px;
+  margin: 0;
 }
