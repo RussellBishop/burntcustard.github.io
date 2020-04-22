@@ -26,11 +26,40 @@ nav a:hover:before {
 
 }
 
+a[href='games']:before,
+a[href='games']:after {
+  width: 2px;
+  height: 14px;
+  background-color: var(--color-white);
+}
+
+@keyframes play {
+  0%   { transform: translateY(-8px); }
+  100% { transform: translateY( 8px); }
+}
+
+a[href='games']:before {
+  left: -2px;
+}
+
+a[href='games']:after {
+  right: -2px;
+}
+
+a[href='games']:hover:before {
+  left: 4px;
+  animation: 1s linear infinite alternate play;
+}
+
+a[href='games']:hover:after {
+  right: 4px;
+  animation: 1s linear infinite alternate-reverse play;
+}
 
 a[href='blog']:before,
 a[href='blog']:after {
   z-index: -1;
-  transition: .25s all steps(3, end);;
+  transition: .25s all steps(3, end);
 }
 
 a[href='blog']:before {
