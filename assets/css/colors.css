@@ -1,5 +1,6 @@
 html {
-  --color-white: #fff;
-  --color-nearly-white: #eee;
-  --color-gray-dark: #222;
+  --white: #fff;
+  --nearly-white: #eee;
+  --gray-dark: #222;
+  --yellow: #fc1;
 }
