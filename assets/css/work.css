@@ -1,0 +1,9 @@
+.work {
+  display: grid;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.work h2 {
+  text-align: center;
+}

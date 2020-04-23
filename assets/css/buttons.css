@@ -31,6 +31,18 @@ a[href='/'][aria-current] {
   display: none;
 }
 
+a[href='projects']:before {
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: currentColor;
+}
+
+a[href='projects']:hover:before {
+  top: 4px;
+}
+
 a[href='games']:before,
 a[href='games']:after {
   width: 2px;
