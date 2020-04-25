@@ -59,6 +59,12 @@ function css() {
     .pipe(browserSync.stream())
 }
 
+function img() {
+  return gulp
+    .src('assets/img/**/*')
+    .pipe(gulp.dest('dist/img'));
+}
+
 function js() {
   return gulp
     .src('assets/js/**/*.js')
@@ -228,6 +234,7 @@ exports.watch = gulp.parallel(
   html,
   css,
   js,
+  img,
   gulp.series(
     browserSyncInit,
     watch
@@ -239,6 +246,7 @@ exports.default = gulp.series(
   gulp.parallel(
     html,
     css,
+    img,
     js
   )
 );
