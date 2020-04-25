@@ -1,29 +1,7 @@
 main {
-  margin-right: auto;
-  margin-left: auto;
-  /* padding-right: 16px;
-  padding-left: 16px; */
-}
 
-p a {
-  color: var(--yellow);
-  background-image: linear-gradient(
-    transparent calc(100% - 1px),
-    white calc(100% - 1px)
-  );
-  background-repeat: no-repeat;
-  background-size: 0 100%;
-  transition: background-size .2s;
-  text-decoration: underline;;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 1px;
-  text-decoration-color: var(--nearly-white);
-}
-
-p a:hover {
-	background-size: 100% 100%;
 }
 
 main section:first-of-type {
-  max-width: 500px;
+  
 }

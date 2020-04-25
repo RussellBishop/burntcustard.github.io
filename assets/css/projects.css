@@ -1,7 +1,7 @@
 .projects {
   margin-right: auto;
   margin-left: auto;
-  padding: max(16px, 4vw);
+  padding: 16px max(16px, 4vw);
   max-width: 1440px;
 }
 
@@ -26,7 +26,7 @@
 
 @media all and (min-width: 500px) {
   .projects article {
-    padding: calc(16px + 5vmin) 8px;
+    padding: 64px 8px;
   }
 
   .projects article:nth-child(odd) .info {
