@@ -5,7 +5,7 @@ nav a {
   justify-content: center;
   margin: 8px;
   font-size: 24px;
-  border: 2px solid currentColor;
+  border: 2px solid var(--nearly-white);
   padding: 4px 10px;
   transition: .2s all;
   height: 32px;
@@ -21,10 +21,6 @@ nav a:after {
   position: absolute;
   content: '';
   transition: .2s all;
-}
-
-nav a:hover:before {
-
 }
 
 a[href='/'][aria-current] {
