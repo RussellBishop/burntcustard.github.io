@@ -1,0 +1,53 @@
+a[href='projects'] {
+  transition: all .15s;
+  background: none;
+}
+
+a[href='projects']:before {
+  position: absolute;
+  top: 3px;
+  right: 100%;
+  bottom: 100%;
+  left: 3px;
+  background: linear-gradient(
+    -45deg,
+    transparent,
+    transparent 6px,
+    var(--nearly-white) 6px
+  );
+  z-index: -1;
+  transition: all .1s;
+}
+
+a[href='projects']:after {
+  top: -2px;
+  width: 18px;
+  background: linear-gradient(
+    to top,
+    var(--nearly-white),
+    var(--nearly-white) 4px,
+    var(--gray-dark) 4px
+  );
+  box-shadow: inset 0 0 0 2px var(--gray-dark);
+  border: 2px solid var(--nearly-white);
+  border-bottom: none;
+  transition: all .15s;
+}
+
+a[href='projects']:hover {
+  color: var(--gray-dark);
+  border: 2px solid white;
+  transition: all .15s;
+}
+
+a[href='projects']:hover:before {
+  bottom: 3px;
+  right: 3px;
+}
+
+a[href='projects']:hover:after {
+  top: -4px;
+  padding-top: 9px;
+  border: 2px solid var(--nearly-white);
+  transition: all .15s .1s;
+}

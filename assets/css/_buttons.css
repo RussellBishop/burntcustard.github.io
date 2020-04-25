@@ -1,0 +1,32 @@
+nav a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px;
+  font-size: 24px;
+  border: 2px solid currentColor;
+  padding: 4px 10px;
+  transition: .2s all;
+  height: 32px;
+}
+
+nav a:nth-child(2) {
+  margin-left: auto;
+}
+
+nav a:before,
+nav a:after {
+  display: block;
+  position: absolute;
+  content: '';
+  transition: .2s all;
+}
+
+nav a:hover:before {
+
+}
+
+a[href='/'][aria-current] {
+  display: none;
+}
