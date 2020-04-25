@@ -1,0 +1,50 @@
+.projects {
+  margin-right: auto;
+  margin-left: auto;
+  padding: max(16px, 4vw);
+  max-width: 1440px;
+}
+
+.projects article {
+  display: flex;
+}
+
+.info > div {
+  max-width: 360px;
+  width: 100%;
+}
+
+.browser {
+
+}
+
+@media all and (max-width: 499px) {
+  .projects article {
+    flex-direction: column;
+  }
+}
+
+@media all and (min-width: 500px) {
+  .projects article {
+    padding: calc(16px + 5vmin) 8px;
+  }
+
+  .projects article:nth-child(odd) .info {
+    padding-right: 48px;
+  }
+
+  .projects article:nth-child(even) {
+    flex-direction: row-reverse;
+  }
+
+  .projects article:nth-child(even) .info {
+    justify-content: flex-start;
+    padding-left: 48px;
+  }
+
+  .info {
+    display: flex;
+    justify-content: flex-end;
+    flex-basis: 40%;
+  }
+}
