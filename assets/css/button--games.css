@@ -1,6 +1,6 @@
 
-a[href='games']:before,
-a[href='games']:after {
+a.games:before,
+a.games:after {
   width: 2px;
   height: 14px;
   background-color: currentColor;
@@ -11,20 +11,20 @@ a[href='games']:after {
   100% { transform: translateY( 8px); }
 }
 
-a[href='games']:before {
+a.games:before {
   left: -2px;
 }
 
-a[href='games']:after {
+a.games:after {
   right: -2px;
 }
 
-a[href='games']:hover:before {
+a.games:hover:before {
   left: 4px;
   animation: 1s linear infinite alternate play;
 }
 
-a[href='games']:hover:after {
+a.games:hover:after {
   right: 4px;
   animation: 1s linear infinite alternate-reverse play;
 }

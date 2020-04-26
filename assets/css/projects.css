@@ -1,11 +1,11 @@
-.projects {
+div.projects {
   margin-right: auto;
   margin-left: auto;
-  padding: 16px max(16px, 4vw);
+  padding: 0 max(16px, 4vw);
   max-width: 1440px;
 }
 
-.projects article {
+div.projects article {
   display: flex;
 }
 

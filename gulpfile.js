@@ -85,13 +85,14 @@ function js() {
 function slotParts(html, parts) {
   const regex = /( *)(?:<part src=")([a-zA-Z./-]*)(?:"\/?>)/g;
   const replacer = (match, indent, filename) => {
-    if (!(filename in parts)) {
-      let error = `Failed to include part: src/parts/${filename}.html`;
+    let filepath = `src/parts/${filename}.html`
+    if (!(filepath in parts)) {
+      let error = `Failed to include part: ${filepath}`;
       console.error(chalk.red(error));
       return `<pre>${error}</pre>`;
     }
 
-    let part = parts[filename];
+    let part = parts[filepath];
 
     // Part importing recursion
     if (part.includes('<part src="')) {
@@ -177,7 +178,7 @@ function combineTitles(html, separator = ' - ') {
  * @param  {[type]}   templates [description]
  * @return {[type]}             [description]
  */
-function jam(chunk, encoding, callback, templates, parts) {
+function jam(chunk, encoding, callback, files) {
   let content = chunk.contents.toString();
 
   // If the file is markdown
@@ -186,13 +187,14 @@ function jam(chunk, encoding, callback, templates, parts) {
     content = markdown(content, { smartypants: true });
 
     // If it's in a folder with a template, slot the content in the template
-    let templatePath = path.dirname(chunk.path) + '/template.html';
-    if (templatePath in templates) {
-      content = slotContent(templates[templatePath], content);
+    let templatePath = `src/${path.basename(chunk.dirname)}/template.html`;
+
+    if (templatePath in files.templates) {
+      content = slotContent(files.templates[templatePath], content);
     }
   }
 
-  content = slotParts(content, parts);
+  content = slotParts(content, files.parts);
   content = setCurrentNav(content, chunk.path);
   content = combineTitles(content);
 
@@ -200,23 +202,40 @@ function jam(chunk, encoding, callback, templates, parts) {
   callback(null, chunk);
 }
 
+const patterns = {
+  templates: 'src/*/?(_)template.html',
+  listings: 'src/*/?(_)listing.html',
+  parts: 'src/parts/*.html',
+};
+
+function getFiles(pattern) {
+  const filepaths = glob.sync(pattern);
+  const files = {};
+
+  filepaths.forEach(filepath => {
+    // Put file contents into files obj, without optional underscores in key
+    files[filepath.replace(/\/_/, '/')] = fs.readFileSync(filepath, 'utf8');
+  });
+
+  return files;
+}
+
+
 function html() {
-  let templates = {};
-  glob.sync('src/*/template.html', { absolute: true }).forEach(filepath => {
-    templates[filepath] = fs.readFileSync(filepath, 'utf8');
-  });
-  let parts = {};
-  glob.sync('src/parts/*.html').forEach(filepath => {
-    let filename = path.basename(filepath, path.extname(filepath));
-    parts[filename] = fs.readFileSync(filepath, 'utf8');
-  });
+  const files = {
+    templates: getFiles(patterns.templates),
+    listings: getFiles(patterns.listings),
+    parts: getFiles(patterns.parts)
+  };
+
   return gulp
     .src([
-      'src/**/*.{html,md}',
-      '!src/parts/*', // Exclude the parts folder
-      '!src/**/?(_)template.html', // Exclude templates (w/ optional '_')
+      `src/**/*.{html,md}`,
+      `!${patterns.templates}`,
+      `!${patterns.listings}`,
+      `!${patterns.parts}`,
     ])
-    .pipe(through.obj((chunk, enc, cb) => jam(chunk, enc, cb, templates, parts)))
+    .pipe(through.obj((chunk, enc, cb) => jam(chunk, enc, cb, files)))
     .pipe(rename(path => ({
       // Move pages out of their subdirectory, to the root of /dist
       dirname: path.dirname === 'pages' ? '' : path.dirname,

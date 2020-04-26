@@ -1,5 +1,5 @@
 
-a[href='blog'] {
+a.blog {
   background: var(--gray-dark);
 }
 
@@ -8,12 +8,12 @@ a[href='blog'] {
   100% { opacity: 1; }
 }
 
-a[href='blog']:before,
-a[href='blog']:after {
+a.blog:before,
+a.blog:after {
   transition: .25s all steps(3, end);
 }
 
-a[href='blog']:before {
+a.blog:before {
   border: 2px solid var(--nearly-white);
   border-top: none;
   left: 10px;
@@ -45,7 +45,7 @@ a[href='blog']:before {
     );
 }
 
-a[href='blog']:after {
+a.blog:after {
   opacity: 0;
   width: 3px;
   height: 3px;
@@ -55,10 +55,10 @@ a[href='blog']:after {
   border-radius: 50%;
 }
 
-a[href='blog']:hover:before {
+a.blog:hover:before {
   top: 100%;
 }
 
-a[href='blog']:hover:after {
+a.blog:hover:after {
   animation: 1s ease-in-out infinite alternate blink;
 }

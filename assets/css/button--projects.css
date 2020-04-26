@@ -1,8 +1,8 @@
-a[href='projects'] {
+a.projects {
   transition: all .15s;
 }
 
-a[href='projects']:before {
+a.projects:before {
   position: absolute;
   top: 3px;
   right: 100%;
@@ -18,7 +18,7 @@ a[href='projects']:before {
   transition: all .1s;
 }
 
-a[href='projects']:after {
+a.projects:after {
   top: -2px;
   width: 18px;
   background: linear-gradient(
@@ -32,17 +32,17 @@ a[href='projects']:after {
   transition: all .15s;
 }
 
-a[href='projects']:hover {
+a.projects:hover {
   color: var(--gray-dark);
   transition: all .15s;
 }
 
-a[href='projects']:hover:before {
+a.projects:hover:before {
   bottom: 3px;
   right: 3px;
 }
 
-a[href='projects']:hover:after {
+a.projects:hover:after {
   top: -4px;
   padding-top: 9px;
   transition: all .15s .1s;
