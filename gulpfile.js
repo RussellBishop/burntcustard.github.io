@@ -169,6 +169,49 @@ function combineTitles(html, separator = ' - ') {
   return html;
 }
 
+function addListings(content, posts, listingTemplate) {
+  //console.log(posts);
+  // const regex = /( *)(?:<part src=")([a-zA-Z./-]*)(?:"\/?>)/g;
+  // const replacer = (match, indent, filename) => {
+  //   let filepath = `src/parts/${filename}.html`
+  //   if (!(filepath in parts)) {
+  //     let error = `Failed to include part: ${filepath}`;
+  //     console.error(chalk.red(error));
+  //     return `<pre>${error}</pre>`;
+  //   }
+  //
+  //   let part = parts[filepath];
+  //
+  //   // Return withe part, with the same indentation as the tag it's replacing
+  //   return part.replace(/^/gm, indent);
+  // };
+
+  let listingsContent = '';
+
+  for (const [filename, postContent] of Object.entries(posts)) {
+
+  //[...posts].forEach(post => {
+    // Populate the listing template with the post details
+    //let postListing = listingTemplate;
+
+    // Fill in <post-title/>
+    let title = postContent.match(/<h1[^>]+>([^<]+)<\/h1>/);
+    title = title ? title[1] : '';
+    console.log(title);
+    // Fill in <post-permalink/>
+    // Fill in <post-date/>
+    // Fill in <post-excerpt/>
+
+    // Add the listing to the listings... list
+    //listingsContent += '';
+  }
+
+  // Return the content but with <listings/> replaced with listingsContent
+
+  //return html.replace(regex, replacer);
+  return content;
+}
+
 /**
  * Named after jamstack, this does (or calls) all the fun part replacement,
  * markdown to HTML, slotting content into templates, etc.
@@ -180,6 +223,10 @@ function combineTitles(html, separator = ' - ') {
  */
 function jam(chunk, encoding, callback, files) {
   let content = chunk.contents.toString();
+  let dirname = path.basename(chunk.dirname);
+  let filename = path.basename(chunk.basename);
+
+  console.log(filename);
 
   // If the file is markdown
   if (path.extname(chunk.path) === '.md') {
@@ -187,11 +234,26 @@ function jam(chunk, encoding, callback, files) {
     content = markdown(content, { smartypants: true });
 
     // If it's in a folder with a template, slot the content in the template
-    let templatePath = `src/${path.basename(chunk.dirname)}/template.html`;
+    let templatePath = `src/${dirname}/template.html`;
 
     if (templatePath in files.templates) {
       content = slotContent(files.templates[templatePath], content);
     }
+  }
+
+  // Add the file to the files cache/map thingy
+  //console.log(remove_(filename));
+  if (remove_(filename) === 'index.html') {
+    let listingPath = `src/${dirname}/listing.html`;
+    if (listingPath in files.listings) {
+     content = addListings(content, files[dirname],
+       files.listings[listingPath]);
+    }
+  } else {
+    if (!files[dirname]) {
+      files[dirname] = {};
+    }
+    files[dirname][remove_(filename)] = content;
   }
 
   content = slotParts(content, files.parts);
@@ -206,7 +268,13 @@ const patterns = {
   templates: 'src/*/?(_)template.html',
   listings: 'src/*/?(_)listing.html',
   parts: 'src/parts/*.html',
+  notIndexes: 'src/**/!(?(_)index).{html,md}',
+  indexes: 'src/**/?(_)index.{html,md}'
 };
+
+function remove_(string) {
+  return string.replace(/^_/, '').replace(/\/_/, '/');
+}
 
 function getFiles(pattern) {
   const filepaths = glob.sync(pattern);
@@ -214,7 +282,7 @@ function getFiles(pattern) {
 
   filepaths.forEach(filepath => {
     // Put file contents into files obj, without optional underscores in key
-    files[filepath.replace(/\/_/, '/')] = fs.readFileSync(filepath, 'utf8');
+    files[remove_(filepath)] = fs.readFileSync(filepath, 'utf8');
   });
 
   return files;
@@ -230,7 +298,8 @@ function html() {
 
   return gulp
     .src([
-      `src/**/*.{html,md}`,
+      patterns.notIndexes,
+      patterns.indexes,
       `!${patterns.templates}`,
       `!${patterns.listings}`,
       `!${patterns.parts}`,
