@@ -121,6 +121,15 @@ function slotContent(html, content) {
   return html.replace(regex, replacer);
 }
 
+function slotListings(html, content) {
+  const regex = /( *)(?:<listings\/?>)/g;
+  const replacer = (match, indent) => {
+    return content.replace(/^/gm, indent);
+  };
+
+  return html.replace(regex, replacer);
+}
+
 function setCurrentNav(html, pagePath) {
   const filename = path.basename(pagePath, path.extname(pagePath));
   const dirname = path.basename(path.dirname(pagePath));
@@ -169,7 +178,8 @@ function combineTitles(html, separator = ' - ') {
   return html;
 }
 
-function addListings(content, posts, listingTemplate) {
+function addListings(content, files, dirname, listingTemplate) {
+  const posts = files[dirname];
   //console.log(posts);
   // const regex = /( *)(?:<part src=")([a-zA-Z./-]*)(?:"\/?>)/g;
   // const replacer = (match, indent, filename) => {
@@ -185,28 +195,43 @@ function addListings(content, posts, listingTemplate) {
   //   // Return withe part, with the same indentation as the tag it's replacing
   //   return part.replace(/^/gm, indent);
   // };
-
   let listingsContent = '';
 
   for (const [filename, postContent] of Object.entries(posts)) {
+    let single = listingTemplate;
+    let name = path.basename(filename, path.extname(filename));
 
   //[...posts].forEach(post => {
     // Populate the listing template with the post details
     //let postListing = listingTemplate;
 
     // Fill in <post-title/>
-    let title = postContent.match(/<h1[^>]+>([^<]+)<\/h1>/);
-    title = title ? title[1] : '';
-    console.log(title);
+    let h1Match = postContent.match(/<h1[^>]+>([^<]+)<\/h1>/);
+    single = single.replace(/<post-title\/?>/, h1Match ? h1Match[1] : name);
+
     // Fill in <post-permalink/>
+    single = single.replace(/<post-permalink\/?>/, `/${dirname}/${name}`);
+
     // Fill in <post-date/>
+    let datetimeMatch = postContent.match(/datetime="([^"]+)"/);
+    let datetime = datetimeMatch ? datetimeMatch[1] : '';
+    let datetimeInnerMatch = postContent.match(/<time[^>]*>([^<]+)/);
+    let datetimeInner = datetimeInnerMatch ? datetimeInnerMatch[1] : '';
+    let timeElement = `<time datetime="${datetime}">${datetimeInner}</time>`;
+    single = single.replace(/<post-date\/?>/g, timeElement);
+
     // Fill in <post-excerpt/>
+    let excerptMatch = postContent.match(/<[>]*data-excerpt[^>]*>[^<]*/) ?? '';
+    single = single.replace(/<post-excerpt>\/?/, excerptMatch);
 
     // Add the listing to the listings... list
-    //listingsContent += '';
+    listingsContent += single;
   }
 
+  console.log(listingsContent);
+
   // Return the content but with <listings/> replaced with listingsContent
+  content = slotListings(content, listingsContent);
 
   //return html.replace(regex, replacer);
   return content;
@@ -226,8 +251,6 @@ function jam(chunk, encoding, callback, files) {
   let dirname = path.basename(chunk.dirname);
   let filename = path.basename(chunk.basename);
 
-  console.log(filename);
-
   // If the file is markdown
   if (path.extname(chunk.path) === '.md') {
     // Convert it to HTML
@@ -246,8 +269,12 @@ function jam(chunk, encoding, callback, files) {
   if (remove_(filename) === 'index.html') {
     let listingPath = `src/${dirname}/listing.html`;
     if (listingPath in files.listings) {
-     content = addListings(content, files[dirname],
-       files.listings[listingPath]);
+      content = addListings(
+        content,
+        files,
+        dirname,
+        files.listings[listingPath]
+      );
     }
   } else {
     if (!files[dirname]) {
