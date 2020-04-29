@@ -5,4 +5,8 @@
 
 ### Heading 3
 
-Test post A content
+Test post A excerpt
+
+-------
+
+Some long excerpt just after the excerpt

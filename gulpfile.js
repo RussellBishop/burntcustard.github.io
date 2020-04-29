@@ -221,8 +221,9 @@ function addListings(content, files, dirname, listingTemplate) {
     single = single.replace(/<post-date\/?>/g, timeElement);
 
     // Fill in <post-excerpt/>
-    let excerptMatch = postContent.match(/<[>]*data-excerpt[^>]*>[^<]*/) ?? '';
-    single = single.replace(/<post-excerpt>\/?/, excerptMatch);
+    let excerptMatch = postContent.match(/<p[^>]*>([^<]*)<\/p>\s*<hr>/);
+    let excerpt = excerptMatch ? excerptMatch[1] : '';
+    single = single.replace(/<post-excerpt>\/?/, excerpt);
 
     // Add the listing to the listings... list
     listingsContent += single;
