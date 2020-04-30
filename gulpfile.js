@@ -138,7 +138,7 @@ function setCurrentNav(html, pagePath) {
     return html.replace('href="/"', '$& aria-current="page"');
   }
 
-  const regex = new RegExp(`href="\/${filename}|${dirname}"`);
+  const regex = new RegExp(`href="\/(${filename}|${dirname})"`);
   return html.replace(regex, '$& aria-current="page"');
 }
 
@@ -180,30 +180,11 @@ function combineTitles(html, separator = ' - ') {
 
 function addListings(content, files, dirname, listingTemplate) {
   const posts = files[dirname];
-  //console.log(posts);
-  // const regex = /( *)(?:<part src=")([a-zA-Z./-]*)(?:"\/?>)/g;
-  // const replacer = (match, indent, filename) => {
-  //   let filepath = `src/parts/${filename}.html`
-  //   if (!(filepath in parts)) {
-  //     let error = `Failed to include part: ${filepath}`;
-  //     console.error(chalk.red(error));
-  //     return `<pre>${error}</pre>`;
-  //   }
-  //
-  //   let part = parts[filepath];
-  //
-  //   // Return withe part, with the same indentation as the tag it's replacing
-  //   return part.replace(/^/gm, indent);
-  // };
   let listingsContent = '';
 
   for (const [filename, postContent] of Object.entries(posts)) {
     let single = listingTemplate;
     let name = path.basename(filename, path.extname(filename));
-
-  //[...posts].forEach(post => {
-    // Populate the listing template with the post details
-    //let postListing = listingTemplate;
 
     // Fill in <post-title/>
     let h1Match = postContent.match(/<h1[^>]+>([^<]+)<\/h1>/);
@@ -221,15 +202,15 @@ function addListings(content, files, dirname, listingTemplate) {
     single = single.replace(/<post-date\/?>/g, timeElement);
 
     // Fill in <post-excerpt/>
-    let excerptMatch = postContent.match(/<p[^>]*>([^<]*)<\/p>\s*<hr>/);
-    let excerpt = excerptMatch ? excerptMatch[1] : '';
+    let excerptMatch = postContent.match(/<p [^]*excerpt[^>]*>[^]*?<\/p>/);
+    let excerpt = excerptMatch ? excerptMatch[0] : '';
     single = single.replace(/<post-excerpt>\/?/, excerpt);
 
     // Add the listing to the listings... list
     listingsContent += single;
   }
 
-  console.log(listingsContent);
+  //console.log(listingsContent);
 
   // Return the content but with <listings/> replaced with listingsContent
   content = slotListings(content, listingsContent);

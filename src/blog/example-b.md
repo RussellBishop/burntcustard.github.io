@@ -4,7 +4,7 @@
 Another title
 ==========
 
-test
+<p class="excerpt">test</p>
 
 ----
 

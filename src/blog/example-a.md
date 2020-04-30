@@ -5,7 +5,7 @@
 
 ### Heading 3
 
-Test post A excerpt
+<p class="excerpt">Test post A excerpt <a href="test">test</a></p>
 
 -------
 

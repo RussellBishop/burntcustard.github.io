@@ -1,5 +1,6 @@
 
-.home a {
+.home a,
+p a {
   color: var(--yellow);
   background-image: linear-gradient(
     transparent calc(100% - 1px),
@@ -14,6 +15,7 @@
   text-decoration-color: var(--nearly-white);
 }
 
-.home a:hover {
+.home a:hover,
+p a:hover {
 	background-size: 100% 100%;
 }
