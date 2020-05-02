@@ -1,7 +1,15 @@
-main {
-
+main.home,
+main.blog {
+  padding: 16px;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 1200px;
 }
 
-main section:first-of-type {
-  
+main.home > div {
+  max-width: 500px;
+}
+
+main.blog h1 {
+  text-align: center;
 }
