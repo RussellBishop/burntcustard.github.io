@@ -195,11 +195,13 @@ function addListings(content, files, dirname, listingTemplate) {
 
     // Fill in <post-date/>
     let datetimeMatch = postContent.match(/datetime="([^"]+)"/);
-    let datetime = datetimeMatch ? datetimeMatch[1] : '';
-    let datetimeInnerMatch = postContent.match(/<time[^>]*>([^<]+)/);
-    let datetimeInner = datetimeInnerMatch ? datetimeInnerMatch[1] : '';
-    let timeElement = `<time datetime="${datetime}">${datetimeInner}</time>`;
-    single = single.replace(/<post-date\/?>/g, timeElement);
+    if (datetimeMatch) {
+      let datetime = datetimeMatch[1];
+      let datetimeInnerMatch = postContent.match(/<time[^>]*>([^<]+)/);
+      let datetimeInner = datetimeInnerMatch ? datetimeInnerMatch[1] : '';
+      let timeElement = `<time datetime="${datetime}">${datetimeInner}</time>`;
+      single = single.replace(/<post-date\/?>/g, timeElement);
+    }
 
     // Fill in <post-excerpt/>
     let excerptMatch = postContent.match(/<p [^]*excerpt[^>]*>[^]*?<\/p>/);

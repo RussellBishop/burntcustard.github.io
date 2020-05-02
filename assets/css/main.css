@@ -1,6 +1,8 @@
 main.home,
-main.blog {
-  padding: 16px;
+main.blog,
+main.post {
+  box-sizing: border-box;
+  padding: 1rem;
   margin-right: auto;
   margin-left: auto;
   max-width: 1200px;
@@ -12,4 +14,12 @@ main.home > div {
 
 main.blog h1 {
   text-align: center;
+}
+
+main.post > * {
+  /* At 500px wide this is full width */
+  width: calc(50% + 250px - 1rem);
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }

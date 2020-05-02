@@ -1,0 +1,9 @@
+p time {
+  display: block;
+  margin-top: -2em;
+}
+
+time:before {
+  display: inline-block;
+  content: '-\a0';
+}
