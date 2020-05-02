@@ -1,7 +1,6 @@
 <title>Example B</title>
-<excerpt>Test post B content</excerpt>
 
-Another title
+Blog post B heading
 ==========
 
 <p class="excerpt">test</p>

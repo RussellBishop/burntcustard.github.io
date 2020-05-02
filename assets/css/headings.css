@@ -7,6 +7,8 @@ h1, h2, h3, h4 {
 .home h1 {
   font-size: 62px;
   margin-top: 0;
+  color: var(--yellow);
+  opacity: .9; /* Because it's so just we make it a tiny bit "lighter" */
 }
 
 h1 {

@@ -1,4 +1,4 @@
-# Heading 1
+# Blog post a heading
 
 <time datetime="29-04-2020">29th April 2020</time>
 <p class="excerpt">Test post A excerpt <a href="test">test</a></p>
