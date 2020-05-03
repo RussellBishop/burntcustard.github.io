@@ -1,2 +1,32 @@
 a.home {
+  position: relative;
+}
+
+a.home:before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  bottom: 3px;
+  left: 100%;
+  background: var(--nearly-white);
+  z-index: -1;
+  transition: all .1s;
+  clip-path: polygon(
+    5px 0,
+    100% 0,
+    calc(100% - 5px) 50%,
+    100% 100%,
+    5px 100%,
+    0 50%
+  );
+}
+
+a.home:hover {
+  color: var(--gray-dark);
+}
+
+a.home:hover:before {
+  left: 3px;
 }
