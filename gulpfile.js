@@ -190,8 +190,8 @@ function addListings(content, files, dirname, listingTemplate) {
     let h1Match = postContent.match(/<h1[^>]+>([^<]+)<\/h1>/);
     single = single.replace(/<post-title\/?>/, h1Match ? h1Match[1] : name);
 
-    // Fill in <post-permalink/>
-    single = single.replace(/<post-permalink\/?>/, `/${dirname}/${name}`);
+    // Fill in <post-permalink/>s
+    single = single.replace(/<post-permalink\/?>/g, `/${dirname}/${name}`);
 
     // Fill in <post-date/>
     let datetimeMatch = postContent.match(/datetime="([^"]+)"/);
@@ -206,7 +206,7 @@ function addListings(content, files, dirname, listingTemplate) {
     // Fill in <post-excerpt/>
     let excerptMatch = postContent.match(/<p [^]*excerpt[^>]*>[^]*?<\/p>/);
     let excerpt = excerptMatch ? excerptMatch[0] : '';
-    single = single.replace(/<post-excerpt>\/?/, excerpt);
+    single = single.replace(/<post-excerpt\/?>/, excerpt);
 
     // Add the listing to the listings... list
     listingsContent += single;

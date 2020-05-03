@@ -32,16 +32,19 @@ a.projects:after {
   transition: all .15s;
 }
 
+a.projects:focus,
 a.projects:hover {
   color: var(--gray-dark);
   transition: all .15s;
 }
 
+a.projects:focus:before,
 a.projects:hover:before {
   bottom: 3px;
   right: 3px;
 }
 
+a.projects:focus:after,
 a.projects:hover:after {
   top: -4px;
   padding-top: 9px;

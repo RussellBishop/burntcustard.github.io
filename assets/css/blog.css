@@ -1,9 +1,9 @@
 .blog article {
-  margin-bottom: 3rem;
+  margin: 3rem 0 5rem 0;
 }
 
-.blog h2 a {
-  text-decoration: underline;
+.blog h2 a,
+.read-more {
   background-color: var(--nearly-white);
   color: var(--gray-dark);
   padding: .1em .2em;

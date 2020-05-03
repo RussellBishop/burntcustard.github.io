@@ -19,11 +19,13 @@ a.games:after {
   right: -2px;
 }
 
+a.games:focus:before,
 a.games:hover:before {
   left: 4px;
   animation: 1s linear infinite alternate play;
 }
 
+a.games:focus:after,
 a.games:hover:after {
   right: 4px;
   animation: 1s linear infinite alternate-reverse play;

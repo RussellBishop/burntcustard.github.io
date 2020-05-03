@@ -55,10 +55,12 @@ a.blog:after {
   border-radius: 50%;
 }
 
+a.blog:focus:before,
 a.blog:hover:before {
   top: 100%;
 }
 
+a.blog:focus:after,
 a.blog:hover:after {
   animation: 1s ease-in-out infinite alternate blink;
 }
