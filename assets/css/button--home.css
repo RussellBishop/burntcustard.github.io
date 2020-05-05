@@ -1,32 +1,45 @@
 a.home {
   position: relative;
+  background: var(--gray-dark);
 }
 
 a.home:before {
   display: block;
   content: '';
   position: absolute;
-  top: 3px;
-  right: 3px;
-  bottom: 3px;
-  left: 100%;
-  background: var(--nearly-white);
-  z-index: -1;
-  transition: all .1s;
+  right: 100%;
+  top: -2px;
+  height: 44px;
+  width: 2px;
+  transition: all .2s;
+  background-color: white;
+}
+
+a.home:after {
+  display: block;
+  content: '';
+  right: calc(100% + 10px);
+  top: 9px;
+  height: 24px;
+  width: 24px;
+  background-color: var(--gray-dark);
   clip-path: polygon(
-    5px 0,
-    100% 0,
-    calc(100% - 5px) 50%,
-    100% 100%,
-    5px 100%,
-    0 50%
+    0 12px,
+    12px 0,
+    24px 12px,
+    24px 24px,
+    15px 24px,
+    15px 15px,
+    9px 15px,
+    9px 24px,
+    0 24px
   );
 }
 
 a.home:hover {
-  color: var(--gray-dark);
+  margin-left: 50px;
 }
 
 a.home:hover:before {
-  left: 3px;
+  width: 44px;
 }
