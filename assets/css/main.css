@@ -1,6 +1,7 @@
 main.home,
 main.blog,
-main.post {
+main.post,
+main.bio {
   box-sizing: border-box;
   padding: 1rem;
   margin-right: auto;
