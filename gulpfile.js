@@ -36,6 +36,8 @@ function reload(cb) {
 function watch() {
   gulp.watch('assets/css/*.css', css);
 
+  gulp.watch('assets/img/*', img);
+
   gulp.watch('src/**/*.{html,md}', gulp.series(html, reload))
       .on('all', (event, path, stats) => {
         console.log('Markup changed:', path);
