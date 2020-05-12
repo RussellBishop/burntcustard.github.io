@@ -1,5 +1,4 @@
 main.home,
-main.blog,
 main.post,
 main.bio {
   box-sizing: border-box;
@@ -13,8 +12,33 @@ main.home > div {
   max-width: 500px;
 }
 
-main.blog h1 {
+main:not(.home) h1 {
+
+}
+
+main.projects header {
+  max-width: 1200px;
   text-align: center;
+  margin: 0 auto;
+}
+
+main.blog {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+main.blog h1 {
+  margin: max(6%, 32px) 0;
+  padding: 0 1rem;
+}
+
+main.blog .listings {
+  padding: 0 1rem;
+}
+
+main.projects header h1 {
+  margin: max(6%, 32px) 0;
+  padding: 0 1rem;
 }
 
 main.post > * {
