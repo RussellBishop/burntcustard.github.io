@@ -36,10 +36,12 @@ a.home:after {
   );
 }
 
+a.home:focus,
 a.home:hover {
   margin-left: 50px;
 }
 
+a.home:focus:before,
 a.home:hover:before {
   width: 44px;
 }

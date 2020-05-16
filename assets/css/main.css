@@ -1,43 +1,32 @@
+/* Outer */
+main header,
 main.home,
 main.post,
-main.bio {
-  box-sizing: border-box;
-  padding: 1rem;
-  margin-right: auto;
-  margin-left: auto;
-  max-width: 1200px;
+.blog .listings {
+ max-width: 1200px;
+ margin: 0 auto;
+}
+
+main.home {
+  padding: 0 1rem;
+}
+
+/* Inner */
+main:not(.home) header h1 {
+ margin: max(6%, 48px) 0;
+ padding: 0 1rem;
 }
 
 main.home > div {
   max-width: 500px;
 }
 
-main:not(.home) h1 {
-
-}
-
-main.projects header {
-  max-width: 1200px;
+main.projects header,
+main.games header {
   text-align: center;
-  margin: 0 auto;
 }
 
-main.blog {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-main.blog h1 {
-  margin: max(6%, 32px) 0;
-  padding: 0 1rem;
-}
-
-main.blog .listings {
-  padding: 0 1rem;
-}
-
-main.projects header h1 {
-  margin: max(6%, 32px) 0;
+main.post {
   padding: 0 1rem;
 }
 

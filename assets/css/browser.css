@@ -9,7 +9,7 @@
 .browser:before {
   content: '';
   float: left;
-  padding-top: 58%;
+  padding-top: calc(56% + 28px);
 }
 
 /* Taskbar • • • */
